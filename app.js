@@ -1,48 +1,45 @@
-const name1 = 'Jeff';
-const name2 = new String('Jeff');
+//  Object.prototype
+//  Person.prototype
 
-console.log(name1);
-// name2.foo = 'bar';
-console.log(name2);
-
-console.log(typeof name2);
-
-if(name2 === 'Jeff') {
-    console.log('YES');
-} else {
-    console.log('NO');
+//  Person constructor
+function Person(firstName, lastName, dob) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.birthday = new Date(dob);
+    /* this.calculateAge = function() {
+        const diff = Date.now() - this.birthday.getTime();
+        const ageDate = new Date(diff);
+        return Math.abs(ageDate.getUTCFullYear() - 1970);
+    } */
 }
 
-// Number
-const num1 = 5;
-const num2 = new Number(5);
+//  Calculate age
+Person.prototype.calculateAge = function () {
+  const diff = Date.now() - this.birthday.getTime();
+  const ageDate = new Date(diff);
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
+};
 
-// Boolean
-const bool1 = true;
-const bool2 = new Boolean(true);
-
-// Function
-const getSum1 = function(x, y) {
-    return x + y;
+//  Get full name
+Person.prototype.getFullName = function() {
+    return `${this.firstName} ${this.lastName}`;
 }
 
-const getSum2 = new Function('x', 'y', 'return x + y');
+//  Gets Married
+Person.prototype.getsMarried = function(newLastName) {
+    this.lastName = newLastName;
+}
 
-console.log(getSum2(1, 4));
+const john = new Person('John', 'Wick', '10-26-1962');
+const mary = new Person('Mary', 'Johnson', 'Sept 28, 1983');
 
-//  Object
-const john1 = {name: 'John'};
-const john2 = new Object({name: 'John B'});
-console.log(john2);
+console.log(mary);
+console.log(john.calculateAge());
 
-//  Arrays
-const arr1 = [1, 2, 3, 4, 5];
-const arr2 = new Array(1, 2, 3, 4, 5, 6);
+console.log(mary.getFullName());
 
-console.log(arr2);
+mary.getsMarried('Smith');
+console.log(mary.getFullName());
 
-//  Regular Expressions
-const re1 = /\w+/;
-const re2 = new RegExp('\\w+');
-
-console.log(re2);
+console.log(mary.hasOwnProperty('firstName'));
+console.log(mary.hasOwnProperty('getFullName'));
