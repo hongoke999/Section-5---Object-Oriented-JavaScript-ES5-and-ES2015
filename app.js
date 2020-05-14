@@ -1,45 +1,39 @@
-//  Object.prototype
-//  Person.prototype
+// Person constructor
 
-//  Person constructor
-function Person(firstName, lastName, dob) {
+function Person(firstName, lastName) {
     this.firstName = firstName;
     this.lastName = lastName;
-    this.birthday = new Date(dob);
-    /* this.calculateAge = function() {
-        const diff = Date.now() - this.birthday.getTime();
-        const ageDate = new Date(diff);
-        return Math.abs(ageDate.getUTCFullYear() - 1970);
-    } */
 }
 
-//  Calculate age
-Person.prototype.calculateAge = function () {
-  const diff = Date.now() - this.birthday.getTime();
-  const ageDate = new Date(diff);
-  return Math.abs(ageDate.getUTCFullYear() - 1970);
-};
-
-//  Get full name
-Person.prototype.getFullName = function() {
-    return `${this.firstName} ${this.lastName}`;
+//  Greeting
+Person.prototype.greeting = function() {
+    return `Hello there ${this.firstName} ${this.lastName}!`;
 }
 
-//  Gets Married
-Person.prototype.getsMarried = function(newLastName) {
-    this.lastName = newLastName;
+const person1 = new Person('John', 'Doe');
+console.log(person1.greeting());
+
+// Customer constructor
+function Customer(firstName, lastName, phone, membership) {
+    Person.call(this, firstName, lastName);
+
+    this.phone = phone;
+    this.membership = membership;
 }
 
-const john = new Person('John', 'Wick', '10-26-1962');
-const mary = new Person('Mary', 'Johnson', 'Sept 28, 1983');
+//  Inherit the Person prototype methods
+Customer.prototype = Object.create(Person.prototype)
 
-console.log(mary);
-console.log(john.calculateAge());
+//  Make customer.prototype return Customer()
+Customer.prototype.constructor = Customer;
 
-console.log(mary.getFullName());
+//  Create customer
+const customer1 = new Customer('Tom', 'Smith', '555-555-5555', 'Standard');
 
-mary.getsMarried('Smith');
-console.log(mary.getFullName());
+console.log(customer1);
 
-console.log(mary.hasOwnProperty('firstName'));
-console.log(mary.hasOwnProperty('getFullName'));
+Customer.prototype.greeting = function() {
+    return `Hello there ${this.firstName} ${this.lastName}! Welcome to our company.`;
+}
+
+console.log(customer1.greeting());
